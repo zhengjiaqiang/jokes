@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>用户登录</title>
+	<link rel="stylesheet" href="__PUBLIC__/Admin/css/base.css" />
+	<link rel="stylesheet" href="__PUBLIC__/Admin/css/login.css" />
+</head>
+<body>
+<div class="superlogin"></div>
+<div class="loginBox">
+	<div class="loginMain">
+		<div class="tabwrap">
+		<form action="{:U('Login/regist')}" method='post'>
+		<table border="0" cellspacing="0" cellpadding="0">
+			<tr><td class="title">用户名：</td><td><input type="text" name='adm_name'class="form-control txt" /></td></tr>
+			<tr><td class="title">密 码：</td><td><input type="password" name='password'class="form-control txt" /></td></tr>
+			<tr>
+			<td class="title">验证码：</td>
+			 <td>
+              <img id="verify_img" alt="点击更换" title="点击更换"  src="{:U('login/verify',array())}" class="m"> 
+              <input id="j_verify"  name="code" type="text" class="form-control txt"> 
+			</td>
+		    </tr>	
+			<tr><td>&nbsp;</td><td><input type="submit" value="注册" /></td></tr>		
+		</table>
+		</form>
+		</div>
+	</div>
+</div>
+<div class="footer">Copyright © 2016-2017 jianet  All Rights Reserved.</div>
+</body>
+</html>
+<script src="__PUBLIC__/Admin/js/jquery-1.7.2.min.js"></script>
+<script>
+$("#verify_img").click(function() {
+var verifyURL = "{:U('login/verify')}";
+//利用JS获取当前时间戳加入到URL之后即可。
+var time = new Date().getTime();
+$("#verify_img").attr({
+"src" : verifyURL + "?" + time
+});
+});
+$('#j_verify').blur(function(){
+var j_verify=$('#j_verify').val();
+if(j_verify=='')
+{
+alert('验证码不能为空');
+return;
+}
+$.ajax({
+url:"{:U('login/check_verify')}",
+type:'post',
+data:{j_verify:j_verify},
+success:function(data){
+if (data == true) {
+//验证码输入正确
+alert("验证码输入正确");
+} else {
+//验证码输入错误
+alert("验证码输入错误");
+return;
+}
+}
+})
+})
+
+</script>
+
